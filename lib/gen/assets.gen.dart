@@ -19,6 +19,9 @@ class $AssetsImagesGen {
 
   /// Directory path: assets/images/png
   $AssetsImagesPngGen get png => const $AssetsImagesPngGen();
+
+  /// Directory path: assets/images/svg
+  $AssetsImagesSvgGen get svg => const $AssetsImagesSvgGen();
 }
 
 class $AssetsTranslationsGen {
@@ -52,12 +55,43 @@ class $AssetsImagesJpgGen {
 class $AssetsImagesPngGen {
   const $AssetsImagesPngGen();
 
+  /// File path: assets/images/png/dummy_business_logo.png
+  AssetGenImage get dummyBusinessLogo =>
+      const AssetGenImage('assets/images/png/dummy_business_logo.png');
+
+  /// File path: assets/images/png/dummy_product.png
+  AssetGenImage get dummyProduct =>
+      const AssetGenImage('assets/images/png/dummy_product.png');
+
+  /// File path: assets/images/png/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/png/logo.png');
+
+  /// File path: assets/images/png/scanner.png
+  AssetGenImage get scanner =>
+      const AssetGenImage('assets/images/png/scanner.png');
+
   /// File path: assets/images/png/splash.png
   AssetGenImage get splash =>
       const AssetGenImage('assets/images/png/splash.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [splash];
+  List<AssetGenImage> get values => [
+    dummyBusinessLogo,
+    dummyProduct,
+    logo,
+    scanner,
+    splash,
+  ];
+}
+
+class $AssetsImagesSvgGen {
+  const $AssetsImagesSvgGen();
+
+  /// File path: assets/images/svg/saudi_riyal.svg
+  String get saudiRiyal => 'assets/images/svg/saudi_riyal.svg';
+
+  /// List of all assets
+  List<String> get values => [saudiRiyal];
 }
 
 class Assets {
@@ -134,15 +168,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;

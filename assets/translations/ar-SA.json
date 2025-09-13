@@ -1,1 +1,25 @@
-{}
+{
+  "currency": "ر.س",
+  "home": {
+    "call_to_action": "برجاء مسح الباركود تحت الضوء",
+    "product_card": {
+      "title": "تفاصيل المنتج",
+      "offer": "عرض لفترة محدودة",
+      "available": "المنتج متوفر",
+      "details": "تفاصيل إضافية"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "change_language": {
+      "title": "تغيير لغة التطبيق",
+      "description": "التغيير من العربية للإنجليزية"
+    },
+    "ip": {
+      "title": "عنوان IP"
+    },
+    "port": {
+      "title": "البورت"
+    }
+  }
+}

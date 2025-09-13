@@ -1,1 +1,25 @@
-{}
+{
+  "currency": "SR",
+  "home": {
+    "call_to_action": "Please Scan the Barcode below the Light",
+    "product_card": {
+      "title": "The Product's Details",
+      "offer": "Limited Time Offer",
+      "available": "The Product is Available",
+      "details": "Further Details"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "change_language": {
+      "title": "Change the App Language",
+      "description": "Change from English to Arabic"
+    },
+    "ip": {
+      "title": "IP Address"
+    },
+    "port": {
+      "title": "Port"
+    }
+  }
+}
