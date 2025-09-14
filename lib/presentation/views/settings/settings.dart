@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import '/common/service_locator.dart';
 import '/common/app_preferences/app_preferences.dart';
 import 'components/action_card.dart';
+import 'components/edit_product_display_buttons.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const routeName = 'settings';
@@ -53,6 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 iconData: Icons.anchor_outlined,
                 title: tr(context: context, 'settings.port.title'),
               ),
+              const EditProductDisplayButtons(),
               const SizedBox(height: 5),
             ],
           ),

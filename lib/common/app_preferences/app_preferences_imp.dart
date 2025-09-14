@@ -38,4 +38,14 @@ class AppPreferencesImp implements AppPreferences {
   Future<void> setLanguageCode(String languageCode) async {
     await preferences.setString('language-code', languageCode);
   }
+
+  @override
+  int getProductCardDisplayTime() {
+    return preferences.getInt('productDisplayTime') ?? 15;
+  }
+
+  @override
+  Future<void> setProductCardDisplayTime(int seconds) async {
+    await preferences.setInt('productDisplayTime', seconds);
+  }
 }

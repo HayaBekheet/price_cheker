@@ -20,6 +20,7 @@
     },
     "port": {
       "title": "Port"
-    }
+    },
+    "product_display_time": "The Product Display Time (In Seconds)"
   }
 }

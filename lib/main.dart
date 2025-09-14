@@ -32,10 +32,10 @@ void main() async {
       EasyLocalization.ensureInitialized(),
       setupServiceLocator(),
     ]);
-    final String languageCode =
-    await getIt<AppPreferences>().getLanguageCode();
-    final Locale locale =
-    languageCode == 'en' ? supportedLocales[0] : supportedLocales[1];
+    final String languageCode = await getIt<AppPreferences>().getLanguageCode();
+    final Locale locale = languageCode == 'en'
+        ? supportedLocales[0]
+        : supportedLocales[1];
     runApp(
       EasyLocalization(
         supportedLocales: supportedLocales,
