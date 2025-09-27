@@ -1,10 +1,12 @@
+import 'package:barcode_newland_flutter/newland_scan_result.dart';
+import 'package:barcode_newland_flutter/newland_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:price_checker_2/presentation/views/home/components/product_card.dart';
 
 import '../settings/settings.dart';
 import '/gen/assets.gen.dart';
 import '/common/functions/is_device_mobile.dart';
+import 'components/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = 'home';
@@ -15,6 +17,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Stream<NewlandScanResult> _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = Newlandscanner.listenForBarcodes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,11 +82,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       ).textTheme.bodyMedium!.copyWith(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
+                    Center(
+                      child: StreamBuilder<NewlandScanResult>(
+                        stream: _stream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final data = snapshot.data!;
+
+                            return Text(
+                              'Scanned barcode: ${data.barcodeData}',
+                              style: Theme.of(context).textTheme.bodyLarge!
+                                  .copyWith(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            );
+                          }
+
+                          return Text(
+                            'Waiting for Data',
+                            style: Theme.of(context).textTheme.bodyLarge!
+                                .copyWith(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-            const ProductCard(),
+            //const ProductCard(),
           ],
         ),
       ),

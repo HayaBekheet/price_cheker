@@ -133,6 +133,7 @@ class ProductCard extends StatelessWidget {
                             icon: Icons.electric_meter_outlined,
                             title: "الحجم: 250 مل",
                           ),*/
+
                           IconedTitle(
                             icon: Icons.info_outline,
                             title:

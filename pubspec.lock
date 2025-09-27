@@ -49,6 +49,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.13.0"
+  barcode_newland_flutter:
+    dependency: "direct main"
+    description:
+      name: barcode_newland_flutter
+      sha256: "9545615f05e66a44e8fbfdec794c37e95d1c6552850d29842b96ffa1a2c4f68d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   boolean_selector:
     dependency: transitive
     description:
