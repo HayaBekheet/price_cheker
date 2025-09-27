@@ -525,6 +525,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
+  newlandscanner:
+    dependency: "direct main"
+    description:
+      name: newlandscanner
+      sha256: "32f80bbe438f791bdd53187572d6b530e0bd1fcbaa74dacfa0ad3aeae3b082ed"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   package_config:
     dependency: transitive
     description:

@@ -1,12 +1,25 @@
-import 'package:barcode_newland_flutter/newland_scan_result.dart';
-import 'package:barcode_newland_flutter/newland_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../settings/settings.dart';
 import '/gen/assets.gen.dart';
 import '/common/functions/is_device_mobile.dart';
+import '/utils/newland_scanner/newland_scanner.dart';
+/*import 'package:barcode_newland_flutter/newland_scan_result.dart';
+import 'package:barcode_newland_flutter/newland_scanner.dart';*/
 import 'components/product_card.dart';
+
+class ScanResult {
+  final String barcode;
+  final String type;
+  final DateTime timestamp;
+
+  ScanResult({
+    required this.barcode,
+    required this.type,
+    required this.timestamp,
+  });
+}
 
 class HomeScreen extends StatefulWidget {
   static const routeName = 'home';
@@ -17,13 +30,114 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Stream<NewlandScanResult> _stream;
+  final NewlandScanner _scanner = NewlandScanner.instance;
+  bool _isScanning = false;
+  final List<ScanResult> _scanHistory = [];
+
+  // Scanner configuration
+  String? _lastScanResult;
+  bool _scanPower = true;
+  int _triggerMode = 1; // 0: normal, 1: continuous, 2: timeout
+  int _scanMode = 3; // 3: broadcast mode for API integration
+  bool _soundEnabled = true;
+  bool _vibrateEnabled = false;
+  bool _ledEnabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeScanner();
+    _startScan();
+  }
+
+  /*@override
+  void dispose() {
+    _scanner.dispose();
+    super.dispose();
+  }*/
+
+  void _initializeScanner() {
+    _scanner.initialize(
+      onScanResult: (String barcode, String type) {
+        setState(() {
+          _lastScanResult = barcode;
+          _isScanning = false;
+          _scanHistory.insert(0, ScanResult(
+            barcode: barcode,
+            type: type,
+            timestamp: DateTime.now(),
+          ));
+          // Keep only last 50 scans
+          if (_scanHistory.length > 50) {
+            _scanHistory.removeLast();
+          }
+        });
+        _showSnackBar('Scanned: $barcode', Colors.green);
+      },
+      onScanError: (String error) {
+        setState(() {
+          _isScanning = false;
+        });
+        _showSnackBar('Error: $error', Colors.red);
+      },
+    );
+
+    // Apply initial configuration
+    _applyConfiguration();
+  }
+
+  Future<void> _applyConfiguration() async {
+    await _scanner.configureScan(
+      scanPower: _scanPower,
+      triggerMode: _triggerMode,
+      scanMode: _scanMode,
+      soundNotification: _soundEnabled,
+      vibrateNotification: _vibrateEnabled,
+      ledNotification: _ledEnabled,
+    );
+  }
+
+  void _showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: color,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Future<void> _startScan() async {
+    setState(() {
+      _isScanning = true;
+    });
+
+    final success = await _scanner.startScan();
+    if (!success) {
+      setState(() {
+        _isScanning = false;
+      });
+      _showSnackBar('Failed to start scanning', Colors.red);
+    }
+  }
+
+  Future<void> _stopScan() async {
+    final success = await _scanner.stopScan();
+    setState(() {
+      _isScanning = false;
+    });
+
+    if (success) {
+      _showSnackBar('Scanning stopped', Colors.orange);
+    }
+  }
+  /*late Stream<NewlandScanResult> _stream;
 
   @override
   void initState() {
     super.initState();
     _stream = Newlandscanner.listenForBarcodes;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +197,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       textAlign: TextAlign.center,
                     ),
                     Center(
+                      child: Text(
+                        'Scanned barcode: $_lastScanResult',
+                        style: Theme.of(context).textTheme.bodyLarge!
+                            .copyWith(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    /*Center(
                       child: StreamBuilder<NewlandScanResult>(
                         stream: _stream,
                         builder: (context, snapshot) {
@@ -105,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ),
