@@ -1,48 +1,50 @@
 package newland_scan;
+//package com.nlscan.pda.demo;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import java.util.HashMap;
-import io.flutter.plugin.common.MethodChannel;
+import android.widget.EditText;
 
+/**
+ * @author Alan
+ * @Company nlscan
+ * @date 2017/12/19 15:23
+ * @Description:
+ */
 public class ScanBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = "ScanBroadcastReceiver";
+    // Determine if ScanBroadcastReceiver is registered
     public static boolean registeredTag = false;
-    private MethodChannel methodChannel;
+    EditText eText;
 
-    public ScanBroadcastReceiver(MethodChannel channel) {
+
+    public ScanBroadcastReceiver(MethodChannel view) {
         super();
-        this.methodChannel = channel;
+        eText = (EditText) view;
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (NLScanConstant.SCANNER_RESULT.equals(action)) {
-            final String scanResult = intent.getStringExtra("SCAN_BARCODE1");
-            final String barcodeName = intent.getStringExtra("SCAN_BARCODE_TYPE_NAME");
+            final String scanResult_1 = intent.getStringExtra("SCAN_BARCODE1");
+            final String barcodeName = intent.getStringExtra("SCAN_BARCODE_TYPE_NAME"); // -1:unknown
             final String scanStatus = intent.getStringExtra("SCAN_STATE");
-
-            if ("ok".equals(scanStatus) && !TextUtils.isEmpty(scanResult)) {
-                // Send result back to Flutter
-                if (methodChannel != null) {
-                    methodChannel.invokeMethod("onScanResult", new HashMap<String, String>() {{
-                        put("barcode", scanResult);
-                        put("type", barcodeName != null ? barcodeName : "");
-                        put("status", scanStatus);
-                    }});
+            StringBuilder sb = new StringBuilder();
+            if ("ok".equals(scanStatus)) {
+                if (!TextUtils.isEmpty(scanResult_1)) {
+                    sb.append("Barcode:").append(scanResult_1).append("\r\n");
+                }
+                if (!TextUtils.isEmpty(barcodeName)) {
+                    sb.append("CodeName:").append(barcodeName).append("\r\n");
                 }
             } else {
-                // Send error back to Flutter
-                if (methodChannel != null) {
-                    methodChannel.invokeMethod("onScanError", new HashMap<String, String>() {{
-                        put("error", "Scan failed: " + scanStatus);
-                        put("status", scanStatus);
-                    }});
-                }
+                sb.append("SCAN_STATE:").append(scanStatus).append("\r\n");
             }
+            eText.append(sb.toString());
+            eText.setSelection(eText.getText().length());
         }
     }
 }
